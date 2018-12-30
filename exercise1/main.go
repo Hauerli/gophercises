@@ -128,4 +128,5 @@ loop:
 			compareAnswer(qanswer, panswer)
 		}
 	}
+	fmt.Scanln()
 }
