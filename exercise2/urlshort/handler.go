@@ -1,6 +1,8 @@
 package urlshort
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // MapHandler will return an http.HandlerFunc (which also
 // implements http.Handler) that will attempt to map any
@@ -9,8 +11,19 @@ import "net/http"
 // If the path is not provided in the map, then the fallback
 // http.Handler will be called instead.
 func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.HandlerFunc {
-	//	TODO: Implement this...
-	return nil
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		// get path from url
+		path := r.URL.Path
+		// extract url from map if it exists
+		url, ok := pathsToUrls[path]
+		// if ok == true
+		if ok {
+			http.Redirect(w, r, url, http.StatusFound)
+		} else {
+			fallback.ServeHTTP(w, r)
+		}
+	}
 }
 
 // YAMLHandler will parse the provided YAML and then return
@@ -30,6 +43,11 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 // See MapHandler to create a similar http.HandlerFunc via
 // a mapping of paths to urls.
 func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
+
+	// needto create yaml Parser
+	// add yaml into map
+	// call mapHandler
+
 	// TODO: Implement this...
 	return nil, nil
 }
