@@ -51,10 +51,8 @@ func compareAnswer(qanswer string, panswer string) {
 
 // Return count of remaining questions
 func leftQuestions(r [][]string, err error) int {
-
 	// count left entrys
 	return len(r)
-
 }
 
 // Print the results
