@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
+	"gophercises/exercise2/urlshort"
 	"net/http"
-
-	"github.com/gophercises/urlshort"
 )
 
 func main() {
