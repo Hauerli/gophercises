@@ -50,9 +50,9 @@ func compareAnswer(qanswer string, panswer string) {
 }
 
 // Return count of remaining questions
-func leftQuestions(r [][]string, err error) int {
+func leftQuestions(r [][]string, err error) {
 	// count left entrys
-	return len(r)
+	questLeft = len(r)
 }
 
 // Print the results
@@ -82,8 +82,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// create new reader buffer to import file records
-	reader := csv.NewReader(bufio.NewReader(file))
+	// create new csv reader buffer to import file records
+	reader := csv.NewReader(file)
 
 	// Wait for Enter to start the game
 	fmt.Println("Press Enter to start the game you got", *timer, "Seconds.")
@@ -97,7 +97,7 @@ loop:
 		// if timer is 0
 		case <-timeout:
 			// call func give slice to count remaining questions
-			questLeft = leftQuestions(reader.ReadAll())
+			leftQuestions(reader.ReadAll())
 			fmt.Println("Sorry you did not finish in time !")
 			finalstats()
 			break loop
@@ -107,8 +107,7 @@ loop:
 			// break if EndOfFile is reached
 			if err == io.EOF {
 				// call func give slice to count remaining questions
-				questLeft = leftQuestions(reader.ReadAll())
-
+				leftQuestions(reader.ReadAll())
 				// call finalstats to tell correct and wrong answers
 				finalstats()
 				break loop
@@ -117,11 +116,9 @@ loop:
 			if err != nil {
 				log.Fatal(err)
 			}
-
 			// assign question and answer from csv into variables
 			question := record[0]
 			qanswer := record[1]
-
 			// call question printer
 			printquest(question)
 			// import person answer
