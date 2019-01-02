@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 func printResult(cAnswer int, wAnswer int, sum int) {
@@ -22,7 +23,7 @@ func main() {
 	cAnswer := 0
 	wAnswer := 0
 
-	flagpath := flag.String("path", "problem.csv", "path defines the path for the problems.csv")
+	flagpath := flag.String("path", "problems.csv", "path defines the path for the problems.csv")
 	flagtimer := flag.Int("timer", 30, "timer defines time to finish the questions")
 	flag.Parse()
 
@@ -38,23 +39,35 @@ func main() {
 	}
 	questsum := len(csvlines)
 
+	timer := time.After(time.Duration(*flagtimer) * time.Second)
+
+	fmt.Println("You got ", *flagtimer, " seconds to answer all Questions.\nPress Enter to start !")
+	fmt.Scanln()
+
+loop:
 	for _, line := range csvlines {
 
-		question := line[0]
-		answer := line[1]
+		select {
+		case <-timer:
+			fmt.Println("Your time is over!")
+			break loop
+		default:
 
-		fmt.Println("What is ", question, " ?")
+			question := line[0]
+			answer := line[1]
 
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		input := scanner.Text()
+			fmt.Println("What is ", question, " ?")
 
-		if input == answer {
-			cAnswer++
-		} else {
-			wAnswer++
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			input := scanner.Text()
+
+			if input == answer {
+				cAnswer++
+			} else {
+				wAnswer++
+			}
 		}
 	}
 	printResult(cAnswer, wAnswer, questsum)
-
 }
