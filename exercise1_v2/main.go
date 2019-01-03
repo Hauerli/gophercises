@@ -70,4 +70,5 @@ loop:
 		}
 	}
 	printResult(cAnswer, wAnswer, questsum)
+	fmt.Scanln()
 }
