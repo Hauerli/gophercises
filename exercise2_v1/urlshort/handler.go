@@ -53,20 +53,20 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 // a mapping of paths to urls.
 func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 
-	parsedYAML := parseYAML(yml)
+	parsedYAML, err := parseYAML(yml)
+	if err != nil {
+		log.Fatal(err)
+	}
 	urlMAP := buildMAP(parsedYAML)
 	return MapHandler(urlMAP, fallback), nil
 
 }
 
-func parseYAML(yml []byte) []Config {
+func parseYAML(yml []byte) ([]Config, error) {
 
 	var parsedYAML []Config
 	err := yaml.Unmarshal(yml, &parsedYAML)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return parsedYAML
+	return parsedYAML, err
 
 }
 
