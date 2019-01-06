@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"gophercises/exercise2/urlshort"
+	"gophercises/exercise2_v1/urlshort"
+
 	"net/http"
 )
 
